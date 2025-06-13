@@ -1,9 +1,20 @@
 // imports
-const express = require("express");
-const { posts } = require("../data/variables");
+// const express = require("express");
+const connection = require("../data/db");
 
 // functions
 const index = (req, res) => {
+  const sql = "SELECT * FROM `posts`";
+  connection.query(sql, (err, results) => {
+    if (err) throw err;
+    console.log(results);
+
+    res.json({
+      data: results,
+      status: 200,
+    });
+  });
+
   // const filteredTags = req.query.tags;
   // const fiteredTitle = req.query.title;
   // let filteredPosts = [...posts];
