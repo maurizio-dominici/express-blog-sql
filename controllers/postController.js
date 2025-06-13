@@ -34,6 +34,25 @@ const index = (req, res) => {
 };
 
 const show = (req, res) => {
+  const id = req.params.id;
+  const sql = "SELECT * FROM `posts` WHERE `id` = ?";
+
+  connection.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(404).json({
+        message: "il post non esiste",
+        status: 404,
+      });
+    }
+
+    res.json({
+      data: results,
+      response: `il post ${id} è stato mostrato`,
+      status: 200,
+    });
+  });
+
   // const id = parseInt(req.params.id);
   // const post = posts.find((currentPost) => currentPost.id === id);
   // if (!post) {
