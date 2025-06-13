@@ -166,6 +166,24 @@ const modify = (req, res) => {
 };
 
 const destroy = (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM `posts` WHERE `id` = ?";
+
+  connection.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({
+        message: "Errore durante l'eliminazione del post",
+        status: 500,
+      });
+    }
+
+    res.json({
+      message: `Post ${id} eliminato con successo`,
+      status: 200,
+    });
+  });
+
   // const id = parseInt(req.params.id);
   // const post = posts.find((currentPost) => currentPost.id === id);
   // if (!post) {
