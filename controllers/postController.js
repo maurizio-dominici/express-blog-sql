@@ -35,7 +35,15 @@ const index = (req, res) => {
 
 const show = (req, res) => {
   const id = req.params.id;
-  const sql = "SELECT * FROM `posts` WHERE `id` = ?";
+  const sql = `
+    SELECT posts.*,
+    GROUP_CONCAT(tags.label) AS tags
+    FROM posts
+    INNER JOIN post_tag ON post_tag.post_id = posts.id
+    INNER JOIN tags ON post_tag.tag_id = tags.id
+    WHERE posts.id = ?
+    GROUP BY posts.id
+    ;`;
 
   connection.query(sql, [id], (err, results) => {
     if (err) {
